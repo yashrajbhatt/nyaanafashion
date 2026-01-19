@@ -1,0 +1,311 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Service Hub | All-in-One Daily Apps</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #ff4757;
+            --food-color: #ff6b81;
+            --grocery-color: #2ed573;
+            --transport-color: #f1c40f;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --bg-gradient: radial-gradient(circle at top right, #1a1a2e, #16213e, #0f0f1b);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+            color: #f1f2f6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin: 0 0 10px;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #70a1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.7;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* Filter Controls */
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .btn.active {
+            background: white;
+            color: #0f172a;
+            border-color: white;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            transition: 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Category Badges */
+        .badge {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .food-badge { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .grocery-badge { background: rgba(46, 213, 115, 0.2); color: #2ed573; }
+        .transport-badge { background: rgba(241, 196, 15, 0.2); color: #f1c40f; }
+
+        .card h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card a:hover {
+            background: white;
+            color: #000;
+        }
+
+        .hide { display: none !important; }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>India Service Hub</h1>
+            <p>Everything you need—from food and groceries to rides and home repairs—all in one place.</p>
+            
+            <div class="filter-buttons">
+                <button class="btn active" onclick="filterSelection('all', event)">All Services</button>
+                <button class="btn" onclick="filterSelection('food', event)">Food Delivery</button>
+                <button class="btn" onclick="filterSelection('grocery', event)">Groceries</button>
+                <button class="btn" onclick="filterSelection('transport', event)">Transport & Services</button>
+            </div>
+        </header>
+
+        <main class="grid">
+            
+            <div class="card food">
+                <div class="badge food-badge">Food</div>
+                <h3>Zomato</h3>
+                <p>Top-rated restaurant delivery and dining discovery.</p>
+                <a href="https://www.zomato.com" target="_blank">Order Now</a>
+            </div>
+            <div class="card food">
+                <div class="badge food-badge">Food</div>
+                <h3>Swiggy</h3>
+                <p>Lightning fast food delivery and premium dining.</p>
+                <a href="https://www.swiggy.com" target="_blank">Order Now</a>
+            </div>
+            <div class="card food">
+                <div class="badge food-badge">Food</div>
+                <h3>EatSure</h3>
+                <p>Order Behrouz Biryani, Faasos, and more in one go.</p>
+                <a href="https://www.eatsure.co/" target="_blank">Order Now</a>
+            </div>
+            <div class="card food">
+                <div class="badge food-badge">Food</div>
+                <h3>BOX8</h3>
+                <p>Delicious Desi meals delivered in under 28 minutes.</p>
+                <a href="https://box8.in/" target="_blank">Order Now</a>
+            </div>
+            <div class="card food">
+                <div class="badge food-badge">Food</div>
+                <h3>Magicpin</h3>
+                <p>Savings, rewards, and food delivery in your local area.</p>
+                <a href="https://www.magicpin.com/" target="_blank">Visit Site</a>
+            </div>
+            <div class="card food">
+                <div class="badge food-badge">Food</div>
+                <h3>Domino's</h3>
+                <p>The go-to app for hot, fresh pizza delivery in 30 mins.</p>
+                <a href="https://www.dominos.co.in/" target="_blank">Order Pizza</a>
+            </div>
+
+            <div class="card grocery">
+                <div class="badge grocery-badge">Grocery</div>
+                <h3>Blinkit</h3>
+                <p>Get everything from milk to gadgets in 10 minutes.</p>
+                <a href="https://www.blinkit.com/" target="_blank">Shop Now</a>
+            </div>
+            <div class="card grocery">
+                <div class="badge grocery-badge">Grocery</div>
+                <h3>Zepto</h3>
+                <p>Fresh groceries delivered at incredible speed.</p>
+                <a href="https://www.zepto.com/" target="_blank">Shop Now</a>
+            </div>
+            <div class="card grocery">
+                <div class="badge grocery-badge">Grocery</div>
+                <h3>BigBasket</h3>
+                <p>Weekly grocery shopping from India's largest store.</p>
+                <a href="https://www.bigbasket.com/" target="_blank">Shop Now</a>
+            </div>
+            <div class="card grocery">
+                <div class="badge grocery-badge">Grocery</div>
+                <h3>Amazon Fresh</h3>
+                <p>Daily essentials and groceries with Prime benefits.</p>
+                <a href="https://www.amazon.in/fresh" target="_blank">Visit Amazon</a>
+            </div>
+            <div class="card grocery">
+                <div class="badge grocery-badge">Grocery</div>
+                <h3>Flipkart Grocery</h3>
+                <p>Great deals on monthly staples and household items.</p>
+                <a href="https://www.flipkart.com/grocery-supermarket-store" target="_blank">Visit Flipkart</a>
+            </div>
+            <div class="card grocery">
+                <div class="badge grocery-badge">Grocery</div>
+                <h3>Reliance Smart</h3>
+                <p>Fresh produce and groceries from the JioMart network.</p>
+                <a href="https://www.jiomart.com/" target="_blank">Shop Now</a>
+            </div>
+
+            <div class="card transport">
+                <div class="badge transport-badge">Transport</div>
+                <h3>Uber</h3>
+                <p>Global leader in ride-hailing for cars and intercity travel.</p>
+                <a href="https://www.uber.com/in/en/" target="_blank">Book Ride</a>
+            </div>
+            <div class="card transport">
+                <div class="badge transport-badge">Transport</div>
+                <h3>Ola Cabs</h3>
+                <p>India's largest mobility platform for cabs and autos.</p>
+                <a href="https://www.olacabs.com/" target="_blank">Book Ride</a>
+            </div>
+            <div class="card transport">
+                <div class="badge transport-badge">Transport</div>
+                <h3>Rapido</h3>
+                <p>India's first and largest bike-taxi service provider.</p>
+                <a href="https://www.rapido.bike/" target="_blank">Book Bike</a>
+            </div>
+            <div class="card transport">
+                <div class="badge transport-badge">Daily Services</div>
+                <h3>Urban Company</h3>
+                <p>Professional salon, cleaning, and repair services at home.</p>
+                <a href="https://www.urbancompany.com/" target="_blank">Book Service</a>
+            </div>
+            <div class="card transport">
+                <div class="badge transport-badge">Logistics</div>
+                <h3>Porter</h3>
+                <p>Hire mini-trucks and bikes for shifting and deliveries.</p>
+                <a href="https://porter.in/" target="_blank">Get Porter</a>
+            </div>
+            <div class="card transport">
+                <div class="badge transport-badge">Transport</div>
+                <h3>Indriver</h3>
+                <p>A unique ride-hailing app where you can negotiate your fare.</p>
+                <a href="https://indriver.com/en/india/" target="_blank">Try Indriver</a>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function filterSelection(category, event) {
+            const cards = document.querySelectorAll(".card");
+            const buttons = document.querySelectorAll(".btn");
+
+            buttons.forEach(btn => btn.classList.remove("active"));
+            event.currentTarget.classList.add("active");
+
+            cards.forEach(card => {
+                if (category === "all" || card.classList.contains(category)) {
+                    card.classList.remove("hide");
+                } else {
+                    card.classList.add("hide");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

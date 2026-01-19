@@ -1,0 +1,222 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SonicStream | Pure Discovery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #030712;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #8b5cf6;
+            --text: #f8fafc;
+            --subtext: #94a3b8;
+            --card-hover: rgba(139, 92, 246, 0.15);
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --glass: rgba(0, 0, 0, 0.03);
+            --border: rgba(0, 0, 0, 0.1);
+            --accent: #6366f1;
+            --text: #0f172a;
+            --subtext: #64748b;
+            --card-hover: rgba(99, 102, 241, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        /* Animated Glow Blobs */
+        .blob {
+            position: fixed; width: 500px; height: 500px; background: var(--accent);
+            filter: blur(140px); border-radius: 50%; z-index: -1; opacity: 0.1;
+            animation: float 25s infinite alternate;
+        }
+        @keyframes float { from { transform: translate(-20%, -20%); } to { transform: translate(120%, 100%); } }
+
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(25px); border-bottom: 1px solid var(--border);
+            padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { font-weight: 800; font-size: 1.6rem; letter-spacing: -1.5px; cursor: pointer; }
+        .logo span { color: var(--accent); }
+
+        .container { max-width: 1250px; margin: 50px auto; padding: 0 25px; }
+
+        .hero { text-align: center; margin-bottom: 60px; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; line-height: 1; }
+        
+        .search-container {
+            max-width: 650px; margin: 40px auto; display: flex; gap: 15px;
+        }
+
+        #searchBar {
+            flex: 1; padding: 18px 30px; border-radius: 100px;
+            background: var(--glass); border: 1px solid var(--border);
+            color: var(--text); font-size: 1rem; outline: none;
+        }
+        #searchBar:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); }
+
+        .random-btn {
+            padding: 0 25px; border-radius: 100px; border: none;
+            background: var(--accent); color: white; cursor: pointer;
+            font-weight: 600; font-size: 0.9rem;
+        }
+
+        /* Grid System */
+        .section-header { display: flex; align-items: center; gap: 20px; margin: 50px 0 25px; }
+        .section-header h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: var(--subtext); }
+        .line { flex: 1; height: 1px; background: var(--border); }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 28px; padding: 35px; position: relative;
+            cursor: pointer; text-decoration: none; color: inherit;
+        }
+        .card:hover {
+            transform: translateY(-8px); background: var(--card-hover);
+            border-color: var(--accent);
+        }
+        .card i { font-size: 2.8rem; margin-bottom: 25px; color: var(--accent); }
+        .card h3 { font-size: 1.4rem; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; color: var(--subtext); line-height: 1.6; margin-bottom: 15px; }
+
+        .tag {
+            font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+            background: var(--border); padding: 5px 12px; border-radius: 20px;
+        }
+
+        .fav-btn {
+            position: absolute; top: 25px; right: 25px; background: none; border: none;
+            color: var(--subtext); cursor: pointer; font-size: 1.3rem; z-index: 5;
+        }
+        .fav-btn.active { color: #f43f5e; }
+
+        #themeToggle { background: var(--glass); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 14px; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .search-container { flex-direction: column; }
+            .random-btn { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="blob"></div>
+
+<nav class="navbar">
+    <div class="logo" onclick="location.reload()">SONIC<span>STREAM</span></div>
+    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+</nav>
+
+<div class="container">
+    <div class="hero">
+        <h1>Your Music.<br>Anywhere.</h1>
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search 16+ platforms...">
+            <button class="random-btn" onclick="pickRandom()">Surprise Me 🎲</button>
+        </div>
+    </div>
+
+    <div id="fav-section" style="display: none;">
+        <div class="section-header"><h2>Favorites</h2><div class="line"></div></div>
+        <div class="grid" id="fav-grid"></div>
+    </div>
+
+    <div class="section-header"><h2>All Platforms</h2><div class="line"></div></div>
+    <div class="grid" id="main-grid"></div>
+</div>
+
+<script>
+    const platforms = [
+        { id: 1, name: "Spotify", icon: "fa-brands fa-spotify", link: "https://spotify.com", tag: "Global", desc: "The world leader in personalized playlists and music discovery." },
+        { id: 2, name: "Apple Music", icon: "fa-brands fa-apple", link: "https://music.apple.com", tag: "Hi-Res", desc: "Spatial audio and lossless streaming for the ultimate quality." },
+        { id: 3, name: "JioSaavn", icon: "fa-solid fa-bolt", link: "https://jiosaavn.com", tag: "Indian", desc: "The go-to destination for Bollywood and regional Indian hits." },
+        { id: 4, name: "YouTube Music", icon: "fa-brands fa-youtube", link: "https://music.youtube.com", tag: "Video", desc: "Seamlessly switch between music videos and audio tracks." },
+        { id: 5, name: "Tidal", icon: "fa-solid fa-gem", link: "https://tidal.com", tag: "Audiophile", desc: "High-fidelity sound quality and exclusive artist content." },
+        { id: 6, name: "Gaana", icon: "fa-solid fa-headphones", link: "https://gaana.com", tag: "Indian", desc: "One of India's largest subscription-based music services." },
+        { id: 7, name: "Wynk Music", icon: "fa-solid fa-signal", link: "https://wynk.in", tag: "Airtel", desc: "Carrier-integrated streaming with offline downloads." },
+        { id: 8, name: "SoundCloud", icon: "fa-brands fa-soundcloud", link: "https://soundcloud.com", tag: "Indie", desc: "The world's largest open audio platform for new artists." },
+        { id: 9, name: "Deezer", icon: "fa-solid fa-layer-group", link: "https://deezer.com", tag: "Global", desc: "Features 'Flow', an infinite mix of your favorites." },
+        { id: 10, name: "Amazon Music", icon: "fa-brands fa-amazon", link: "https://music.amazon.com", tag: "Premium", desc: "Integrated with Alexa and included with Prime." },
+        { id: 11, name: "Qobuz", icon: "fa-solid fa-compact-disc", link: "https://qobuz.com", tag: "Studio", desc: "The highest quality downloads and streaming available." },
+        { id: 12, name: "Pandora", icon: "fa-solid fa-p", link: "https://pandora.com", tag: "Radio", desc: "Personalized radio based on the Music Genome Project." },
+        { id: 13, name: "Anghami", icon: "fa-solid fa-star", link: "https://anghami.com", tag: "MENA", desc: "The first legal music streaming platform in the Arab world." },
+        { id: 14, name: "Boomplay", icon: "fa-solid fa-play", link: "https://boomplay.com", tag: "African", desc: "Discover the best of African music and artists." },
+        { id: 15, name: "iHeartRadio", icon: "fa-solid fa-tower-cell", link: "https://iheart.com", tag: "Live", desc: "Free radio, podcasts, and curated music stations." },
+        { id: 16, name: "Raaga", icon: "fa-solid fa-om", link: "https://raaga.com", tag: "Devotional", desc: "Specializing in South Indian and religious music content." }
+    ];
+
+    let favorites = JSON.parse(localStorage.getItem('sonic_favs')) || [];
+
+    function toggleFavorite(id, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        favorites = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
+        localStorage.setItem('sonic_favs', JSON.stringify(favorites));
+        render(document.getElementById('searchBar').value);
+    }
+
+    function pickRandom() {
+        const platform = platforms[Math.floor(Math.random() * platforms.length)];
+        window.open(platform.link, '_blank');
+    }
+
+    function render(query = "") {
+        const mainGrid = document.getElementById('main-grid');
+        const favGrid = document.getElementById('fav-grid');
+        mainGrid.innerHTML = favGrid.innerHTML = "";
+
+        platforms.forEach(p => {
+            const isFav = favorites.includes(p.id);
+            const html = `
+                <div class="card" onclick="window.open('${p.link}', '_blank')">
+                    <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${p.id}, event)">
+                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                    </button>
+                    <i class="${p.icon}"></i>
+                    <h3>${p.name}</h3>
+                    <p>${p.desc}</p>
+                    <span class="tag">${p.tag}</span>
+                </div>`;
+
+            if (p.name.toLowerCase().includes(query.toLowerCase()) || p.tag.toLowerCase().includes(query.toLowerCase())) {
+                mainGrid.innerHTML += html;
+            }
+            if (isFav) favGrid.innerHTML += html;
+        });
+
+        document.getElementById('fav-section').style.display = favorites.length > 0 ? 'block' : 'none';
+    }
+
+    document.getElementById('searchBar').addEventListener('input', (e) => render(e.target.value));
+    
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const body = document.body;
+        const isDark = body.getAttribute('data-theme') !== 'light';
+        body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.querySelector('#themeToggle i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    });
+
+    render();
+</script>
+</body>
+</html>

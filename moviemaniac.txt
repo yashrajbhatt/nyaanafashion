@@ -1,0 +1,353 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <titleMovieManiac</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent: #00f2ff;
+            --accent-purple: #7000ff;
+            --text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Moving Animated Background --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.08) 0%, transparent 40%);
+            z-index: -1;
+            animation: bgMove 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgMove {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        /* --- Hero Section --- */
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Search Bar --- */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        #searchInput:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+        }
+
+        /* --- Grid & Cards --- */
+        .section-header {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin: 3rem 0 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header::after {
+            content: "";
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(to right, var(--accent), transparent);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 180px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .card .tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .card .arrow {
+            align-self: flex-end;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .card:hover .arrow {
+            background: var(--accent);
+            transform: translateX(5px);
+        }
+
+        /* --- NEW ANIMATION ELEMENTS --- */
+        .orb-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .floating-orb {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-purple));
+            border-radius: 50%;
+            filter: blur(8px);
+            box-shadow: 0 0 60px rgba(0, 242, 255, 0.4), 0 0 120px rgba(112, 0, 255, 0.3);
+            animation: floatOrb 8s infinite ease-in-out;
+            cursor: pointer;
+            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 1;
+        }
+
+        .floating-orb:hover {
+            transform: scale(1.1);
+            filter: blur(2px);
+            box-shadow: 0 0 100px var(--accent), 0 0 200px var(--accent-purple);
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-40px) scale(1.05); }
+        }
+
+        .orb-text {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            letter-spacing: 8px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            animation: pulseText 2s infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; color: var(--accent); }
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            padding-bottom: 3rem;
+            color: #444;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>MovieManiac</h1>
+        <p>Premium directory for the next generation of entertainment.</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search platforms (e.g. Netflix, Anime, Bengali)...">
+        </div>
+    </header>
+
+    <div id="content">
+        <div class="section-header">India Premium</div>
+        <div class="grid" id="india-grid"></div>
+
+        <div class="section-header">Global & Niche</div>
+        <div class="grid" id="global-grid"></div>
+    </div>
+
+    <div class="orb-wrapper">
+        <div class="floating-orb" id="mainOrb"></div>
+        <p class="orb-text">created by Yash Raj Bhatt</p>
+    </div>
+
+    <footer>
+        <p>Entertainment you looking for</p>
+    </footer>
+</div>
+
+<script>
+    const platforms = [
+        { name: "Netflix", url: "https://www.netflix.com", type: "Movies & Series", region: "india" },
+        { name: "Prime Video", url: "https://www.primevideo.com", type: "Originals", region: "india" },
+        { name: "Disney+ Hotstar", url: "https://www.hotstar.com", type: "Sports & Movies", region: "india" },
+        { name: "JioCinema", url: "https://www.jiocinema.com", type: "Free & Premium", region: "india" },
+        { name: "SonyLIV", url: "https://www.sonyliv.com", type: "TV Shows", region: "india" },
+        { name: "ZEE5", url: "https://www.zee5.com", type: "Regional & Originals", region: "india" },
+        { name: "Aha", url: "https://www.aha.video", type: "Telugu / Tamil", region: "india" },
+        { name: "Hoichoi", url: "https://www.hoichoi.tv", type: "Bengali", region: "india" },
+        { name: "HBO Max", url: "https://www.max.com", type: "Premium", region: "global" },
+        { name: "Apple TV+", url: "https://tv.apple.com", type: "High Quality", region: "global" },
+        { name: "Crunchyroll", url: "https://www.crunchyroll.com", type: "Anime", region: "global" },
+        { name: "Mubi", url: "https://mubi.com", type: "Arthouse", region: "global" }
+    ];
+
+    const indiaGrid = document.getElementById('india-grid');
+    const globalGrid = document.getElementById('global-grid');
+    const searchInput = document.getElementById('searchInput');
+    const mainOrb = document.getElementById('mainOrb');
+
+    function renderPlatforms(filter = '') {
+        indiaGrid.innerHTML = '';
+        globalGrid.innerHTML = '';
+
+        const filtered = platforms.filter(p => 
+            p.name.toLowerCase().includes(filter.toLowerCase()) || 
+            p.type.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        filtered.forEach((p, index) => {
+            const card = document.createElement('a');
+            card.href = p.url;
+            card.target = "_blank";
+            card.className = 'card';
+            card.innerHTML = `
+                <div>
+                    <span class="tag">${p.type}</span>
+                    <h3>${p.name}</h3>
+                </div>
+                <div class="arrow">→</div>
+            `;
+            
+            if (p.region === 'india') indiaGrid.appendChild(card);
+            else globalGrid.appendChild(card);
+
+            setTimeout(() => card.classList.add('visible'), index * 100);
+        });
+    }
+
+    // Orb Mouse Interaction
+    document.addEventListener('mousemove', (e) => {
+        const moveX = (window.innerWidth / 2 - e.pageX) / 30;
+        const moveY = (window.innerHeight / 2 - e.pageY) / 30;
+        mainOrb.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+
+    // Click to change color theme
+    mainOrb.addEventListener('click', () => {
+        const colors = ['#00f2ff', '#7000ff', '#ff007a', '#00ff88'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        document.documentElement.style.setProperty('--accent', randomColor);
+        mainOrb.style.boxShadow = `0 0 150px ${randomColor}`;
+    });
+
+    searchInput.addEventListener('input', (e) => renderPlatforms(e.target.value));
+
+    // Initial Load
+    renderPlatforms();
+</script>
+</body>
+</html>
