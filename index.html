@@ -1,0 +1,365 @@
+ 
+ <!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYAANA FASHION | Global Fashion Directory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        premium: '#0a0a0a',
+                        surface: '#121212',
+                        accent: '#c5a358', // Gold accent
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.8s ease-out forwards',
+                        'scroll': 'scroll 20s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Editorial Noise Texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass {
+            background: rgba(10, 10, 10, 0.85);
+        }
+
+        /* Custom Selection */
+        ::selection {
+            background: #c5a358;
+            color: white;
+        }
+
+        /* Card Hover Effects */
+        .brand-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .brand-card:hover {
+            transform: translateY(-5px);
+            border-color: #c5a358;
+        }
+
+        .marquee-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .marquee-content {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+        
+        /* Smooth Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: #c5a358; }
+    </style>
+</head>
+<body class="bg-white dark:bg-premium text-gray-900 dark:text-gray-100 font-sans transition-colors duration-500 selection:bg-accent selection:text-white">
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed top-0 w-full z-40 glass border-b border-gray-100 dark:border-neutral-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 group cursor-pointer">
+                <div class="w-2 h-2 bg-accent rounded-full group-hover:scale-150 transition-transform duration-300"></div>
+                <div class="text-2xl font-serif tracking-widest font-bold">NYAANA<span class="italic font-normal text-gray-400">FASHION</span></div>
+            </div>
+            
+            <div class="hidden md:flex space-x-10 text-[11px] uppercase tracking-[0.25em] font-semibold text-gray-500 dark:text-gray-400">
+                <a href="music.html" class="hover:text-black dark:hover:text-white transition-colors relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-accent after:transition-all hover:after:w-full">music</a>
+                <a href="moviemaniac.html" class="hover:text-black dark:hover:text-white transition-colors relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-accent after:transition-all hover:after:w-full">enterntainment</a>
+                <a href="food.html" class="hover:text-black dark:hover:text-white transition-colors relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-accent after:transition-all hover:after:w-full">daily services</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button id="themeToggle" class="p-2 text-gray-500 hover:text-accent transition-colors">
+                    <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                </button>
+                <div class="relative hidden sm:block group">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-accent transition-colors"></i>
+                    <input type="text" id="searchInput" placeholder="Find a brand..." 
+                    class="pl-10 pr-4 py-2 bg-gray-50 dark:bg-surface border border-transparent dark:border-neutral-800 rounded-lg text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent w-56 focus:w-72 transition-all duration-300 placeholder:text-gray-400">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-48 pb-24 px-6 text-center relative overflow-hidden">
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-r from-gray-100 to-gray-50 dark:from-neutral-900 dark:to-premium rounded-full blur-3xl -z-10 opacity-60"></div>
+
+        <div class="max-w-4xl mx-auto opacity-0 animate-fade-up">
+            <div class="inline-flex items-center gap-2 mb-6 border border-gray-200 dark:border-neutral-800 rounded-full px-4 py-1.5">
+                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-[10px] uppercase tracking-[0.25em] font-semibold text-gray-500">Created by Yash Raj Bhatt</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl font-serif mb-8 leading-[0.9] text-gray-900 dark:text-white">
+                The Global <br> 
+                <span class="italic text-gray-400 dark:text-gray-600 font-light">Fashion Index</span>
+            </h1>
+            
+            <p class="text-gray-600 dark:text-gray-400 text-lg font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+                Explore a meticulously curated directory of the world’s finest luxury houses, underground streetwear labels, and avant-garde designers.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4" id="filterButtons">
+                <button data-filter="all" class="filter-btn px-8 py-3 rounded-full border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-xs uppercase tracking-widest hover:scale-105 transition-transform duration-300">View All</button>
+                <button data-filter="Luxury" class="filter-btn px-8 py-3 rounded-full border border-gray-200 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-accent hover:text-accent dark:hover:text-accent text-xs uppercase tracking-widest transition-all duration-300 bg-white/50 dark:bg-surface/50">Luxury</button>
+                <button data-filter="Streetwear" class="filter-btn px-8 py-3 rounded-full border border-gray-200 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-accent hover:text-accent dark:hover:text-accent text-xs uppercase tracking-widest transition-all duration-300 bg-white/50 dark:bg-surface/50">Streetwear</button>
+                <button data-filter="India" class="filter-btn px-8 py-3 rounded-full border border-gray-200 dark:border-neutral-800 text-gray-600 dark:text-gray-300 hover:border-accent hover:text-accent dark:hover:text-accent text-xs uppercase tracking-widest transition-all duration-300 bg-white/50 dark:bg-surface/50">India</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-8xl mx-auto px-6 pb-40">
+        <div class="flex items-center justify-between mb-8 border-b border-gray-100 dark:border-neutral-800 pb-4">
+            <span class="text-xs font-mono text-gray-400 uppercase">Directory List</span>
+            <span class="text-xs font-mono text-gray-400 uppercase" id="countDisplay">00 Brands</span>
+        </div>
+        
+        <div id="directoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+    </main>
+
+    <footer class="bg-gray-50 dark:bg-surface pt-20 border-t border-gray-200 dark:border-neutral-800 overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 pb-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-20">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-serif font-bold mb-6">NYAANA<span class="italic font-normal">FASHION</span></h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-sm mb-8">
+                        The definitive digital archive for modern fashion enthusiasts. Bridging the gap between heritage luxury and the next generation of style.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-neutral-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-neutral-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-neutral-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"><i data-lucide="mail" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-widest mb-6 text-gray-900 dark:text-white">Navigation</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 dark:text-gray-400">
+                        <li><a href="moviemaniac.html" class="hover:text-accent hover:pl-2 transition-all duration-300">Movie and OTT platforms</a></li>
+                        <li><a href="music.html" class="hover:text-accent hover:pl-2 transition-all duration-300">Music Platforms</a></li>
+                        <li><a href="food.html" class="hover:text-accent hover:pl-2 transition-all duration-300">Food and Daily Services   Platforms</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-widest mb-6 text-gray-900 dark:text-white">The Digest</h4>
+                    <p class="text-xs text-gray-500 mb-4">Weekly curation of the best in fashion.</p>
+                    <div class="relative">
+                        <input type="email" placeholder="Email Address" class="w-full bg-transparent border-b border-gray-300 dark:border-neutral-700 py-2 text-sm focus:outline-none focus:border-accent transition-colors">
+                        <button class="absolute right-0 top-2 text-gray-400 hover:text-accent transition-colors"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200 dark:border-neutral-800 text-[10px] uppercase tracking-widest text-gray-400">
+                <span>&copy; 2026 Nyaana Fashion Inc.</span>
+                 
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-neutral-800 py-6 bg-white dark:bg-black">
+            <div class="marquee-container">
+                <div class="marquee-content whitespace-nowrap">
+                    <span class="text-6xl md:text-9xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-white dark:from-neutral-900 dark:to-black stroke-text opacity-50 dark:opacity-30 px-10">
+                        DISCOVER / SHOP / INSPIRE / NYAANA / STYLE / DISCOVER / SHOP / INSPIRE / NYAANA / STYLE / 
+                    </span>
+                    <span class="text-6xl md:text-9xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-white dark:from-neutral-900 dark:to-black stroke-text opacity-50 dark:opacity-30 px-10">
+                        DISCOVER / SHOP / INSPIRE / NYAANA / STYLE / DISCOVER / SHOP / INSPIRE / NYAANA / STYLE / 
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="md:hidden fixed bottom-0 left-0 w-full glass border-t border-gray-100 dark:border-neutral-800 px-8 py-4 flex justify-between items-center z-50">
+        <button class="flex flex-col items-center text-accent"><i data-lucide="home" class="w-5 h-5"></i></button>
+        <button class="flex flex-col items-center text-gray-400 hover:text-black dark:hover:text-white"><i data-lucide="compass" class="w-5 h-5"></i></button>
+        <button class="flex flex-col items-center text-gray-400 hover:text-black dark:hover:text-white"><i data-lucide="bookmark" class="w-5 h-5"></i></button>
+        <button class="flex flex-col items-center text-gray-400 hover:text-black dark:hover:text-white"><i data-lucide="user" class="w-5 h-5"></i></button>
+    </div>
+
+    <script>
+        // --- Data ---
+        const platforms = [
+            { name: "Net-a-Porter", cat: "Luxury", reg: "Global", desc: "The ultimate destination for luxury designer fashion.", link: "https://www.net-a-porter.com/" },
+            { name: "Myntra", cat: "Budget", reg: "India", desc: "India's largest fashion e-commerce store.", link: "https://www.myntra.com/" },
+            { name: "SSENSE", cat: "Streetwear", reg: "Global", desc: "Curated selection of independent and luxury designers.", link: "https://www.ssense.com/" },
+            { name: "Ajio", cat: "Budget", reg: "India", desc: "Trendiest styles from top brands and indie labels.", link: "https://www.ajio.com/" },
+            { name: "Farfetch", cat: "Luxury", reg: "Global", desc: "Global luxury marketplace with over 700 boutiques.", link: "https://www.farfetch.com/" },
+            { name: "Nykaa Fashion", cat: "Budget", reg: "India", desc: "High-end fashion curated by Nykaa.", link: "https://www.nykaafashion.com/" },
+            { name: "H&M", cat: "Streetwear", reg: "Global", desc: "Fashion and quality at the best price.", link: "https://www.hm.com/" },
+            { name: "Tata CLiQ", cat: "Luxury", reg: "India", desc: "Authentic brands across luxury and lifestyle.", link: "https://www.tatacliq.com/" },
+            { name: "Vestiaire Collective", cat: "Pre-Owned", reg: "Global", desc: "The leading global app for desirable pre-loved fashion.", link: "https://www.vestiairecollective.com/" },
+            { name: "Zudio", cat: "Budget", reg: "India", desc: "Value fashion for the trend-conscious Indian.", link: "https://www.zudio.com/" },
+            { name: "MatchesFashion", cat: "Luxury", reg: "Global", desc: "Modern luxury from 650+ established and innovative designers.", link: "#" },
+            { name: "Urbanic", cat: "Streetwear", reg: "India", desc: "London-based brand bringing high-street fashion to India.", link: "https://www.urbanic.com/" }
+        ];
+
+        // --- DOM Elements ---
+        const grid = document.getElementById('directoryGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const countDisplay = document.getElementById('countDisplay');
+
+        // --- Core Functions ---
+        function renderPlatforms(filteredList) {
+            grid.innerHTML = '';
+            
+            // Animation staggered delay logic
+            let delay = 0;
+
+            if(filteredList.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-400">No brands found matching your criteria.</div>`;
+                countDisplay.innerText = "00 Brands";
+                return;
+            }
+
+            countDisplay.innerText = `${filteredList.length < 10 ? '0' + filteredList.length : filteredList.length} Brands`;
+
+            filteredList.forEach((p, index) => {
+                const card = document.createElement('div');
+                card.className = "brand-card group bg-white dark:bg-surface border border-gray-100 dark:border-neutral-800 p-8 rounded-xl flex flex-col justify-between h-full opacity-0";
+                card.style.animation = `fadeUp 0.6s ease-out forwards ${index * 0.05}s`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="bg-gray-50 dark:bg-neutral-800 w-12 h-12 rounded-full flex items-center justify-center font-serif text-xl font-bold group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors duration-300">
+                                ${p.name.charAt(0)}
+                            </div>
+                            <span class="text-[9px] tracking-[0.2em] uppercase px-3 py-1 border border-gray-100 dark:border-neutral-700 rounded-full font-bold text-gray-400 group-hover:border-accent group-hover:text-accent transition-colors">
+                                ${p.reg}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-serif font-medium mb-3 group-hover:translate-x-1 transition-transform duration-300">${p.name}</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-8 font-light">
+                            ${p.desc}
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-50 dark:border-neutral-800 pt-6 mt-auto">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-accent transition-colors">${p.cat}</span>
+                        <a href="${p.link}" target="_blank" class="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 dark:bg-neutral-800 group-hover:bg-accent group-hover:text-white transition-all duration-300 transform group-hover:-rotate-45">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // --- Event Listeners ---
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = platforms.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.cat.toLowerCase().includes(query)
+            );
+            renderPlatforms(filtered);
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active classes
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-black', 'dark:bg-white', 'text-white', 'dark:text-black', 'border-black', 'dark:border-white');
+                    b.classList.add('text-gray-600', 'dark:text-gray-300', 'border-gray-200', 'dark:border-neutral-800', 'bg-white/50', 'dark:bg-surface/50');
+                });
+                
+                // Add active classes
+                btn.classList.remove('text-gray-600', 'dark:text-gray-300', 'border-gray-200', 'dark:border-neutral-800', 'bg-white/50', 'dark:bg-surface/50');
+                btn.classList.add('bg-black', 'dark:bg-white', 'text-white', 'dark:text-black', 'border-black', 'dark:border-white');
+
+                const filter = btn.getAttribute('data-filter');
+                if (filter === 'all') {
+                    renderPlatforms(platforms);
+                } else {
+                    const filtered = platforms.filter(p => p.cat === filter || p.reg === filter);
+                    renderPlatforms(filtered);
+                }
+            });
+        });
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // --- Init ---
+        renderPlatforms(platforms);
+
+        // Add stroke text support for the marquee
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .stroke-text {
+                -webkit-text-stroke: 1px rgba(128, 128, 128, 0.2);
+                color: transparent;
+            }
+            .dark .stroke-text {
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            }
+        `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>
